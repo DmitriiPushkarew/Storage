@@ -8,6 +8,7 @@ import org.example.storage.repository.AnswerRepository;
 import org.example.storage.repository.PromptRepository;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 public class PromptServiceImpl implements PromptService {
@@ -16,15 +17,22 @@ public class PromptServiceImpl implements PromptService {
     private final AnswerRepository answerRepository;
 
     @Transactional
-    public void addPromptAndAnswer(String promptContent, String answerContent) {
+    public void addPrompt(String topic, String promptContent) {
         Prompt prompt = Prompt.builder()
                 .content(promptContent)
+                .topic(topic)
                 .build();
-        prompt = promptRepository.save(prompt);
+        promptRepository.save(prompt);
+    }
 
+    @Transactional
+    public void addAnswer(String topic, String keyword, String answerContent) {
+        Prompt prompt = promptRepository.findByTopic(topic)
+                .orElseThrow(() -> new IllegalArgumentException("Prompt not found with topic: " + topic));
         Answer answer = Answer.builder()
                 .prompt(prompt)
-                .answer(answerContent)
+                .keyword(keyword)
+                .content(answerContent)
                 .build();
         answerRepository.save(answer);
     }

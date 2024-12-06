@@ -1,5 +1,7 @@
 package org.example.storage.service;
 
 public interface PromptService {
-    void addPromptAndAnswer(String promptContent, String answerContent);
+    void addPrompt(String topic, String promptContent);
+
+    void addAnswer(String promptTopic, String keyword, String answerContent);
 }
