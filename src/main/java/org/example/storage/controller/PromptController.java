@@ -1,7 +1,8 @@
 package org.example.storage.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.storage.dto.PromptAnswerRequest;
+import org.example.storage.dto.request.AnswerRequest;
+import org.example.storage.dto.request.PromptRequest;
 import org.example.storage.service.PromptService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +17,15 @@ public class PromptController {
 
     private final PromptService promptService;
 
-    @PostMapping("/addPromptAndAnswer")
-    public ResponseEntity<String> addPromptAndAnswer(@RequestBody PromptAnswerRequest request) {
-        promptService.addPromptAndAnswer(request.getPrompt(), request.getAnswer());
-        return ResponseEntity.ok("Prompt and Answer added successfully!");
+    @PostMapping("/addPrompt")
+    public ResponseEntity<String> addPrompt(@RequestBody PromptRequest request) {
+        promptService.addPrompt(request.getTopic(), request.getContent());
+        return ResponseEntity.ok("Prompt added successfully!");
     }
 
+    @PostMapping("/addAnswer")
+    public ResponseEntity<String> addAnswer(@RequestBody AnswerRequest request) {
+        promptService.addAnswer(request.getPromptTopic(), request.getKeyword(), request.getContent());
+        return ResponseEntity.ok("Answer added successfully!");
+    }
 }
