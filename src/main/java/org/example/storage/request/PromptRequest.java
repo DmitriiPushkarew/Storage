@@ -1,4 +1,4 @@
-package org.example.storage.dto.request;
+package org.example.storage.request;
 
 import lombok.Data;
 
