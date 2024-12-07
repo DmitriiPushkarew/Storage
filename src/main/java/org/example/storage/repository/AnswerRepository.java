@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
+
     @Query("SELECT a.keyword FROM Answer a WHERE a.prompt.topic = :topic")
     List<String> findKeywordsByTopic(String topic);
 
