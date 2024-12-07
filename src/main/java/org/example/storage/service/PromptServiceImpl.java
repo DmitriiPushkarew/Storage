@@ -8,6 +8,8 @@ import org.example.storage.repository.AnswerRepository;
 import org.example.storage.repository.PromptRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +37,13 @@ public class PromptServiceImpl implements PromptService {
                 .content(answerContent)
                 .build();
         answerRepository.save(answer);
+    }
+
+    public List<String> getTopics() {
+        return promptRepository.findAllDistinctTopics();
+    }
+
+    public List<String> getKeywordsByTopic(String topic) {
+        return answerRepository.findKeywordsByTopic(topic);
     }
 }

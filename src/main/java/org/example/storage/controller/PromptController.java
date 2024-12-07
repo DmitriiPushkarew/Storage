@@ -5,10 +5,9 @@ import org.example.storage.dto.request.AnswerRequest;
 import org.example.storage.dto.request.PromptRequest;
 import org.example.storage.service.PromptService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -27,5 +26,15 @@ public class PromptController {
     public ResponseEntity<String> addAnswer(@RequestBody AnswerRequest request) {
         promptService.addAnswer(request.getPromptTopic(), request.getKeyword(), request.getContent());
         return ResponseEntity.ok("Answer added successfully!");
+    }
+
+    @GetMapping("/topics")
+    public List<String> getTopics() {
+        return promptService.getTopics();
+    }
+
+    @GetMapping("/keywords")
+    public List<String> getKeywordsByTopic(@RequestParam(name = "topic") String topic) {
+        return promptService.getKeywordsByTopic(topic);
     }
 }
