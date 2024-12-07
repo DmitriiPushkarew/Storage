@@ -10,4 +10,6 @@ public interface PromptService {
     List<String> getTopics();
 
     List<String> getKeywordsByTopic(String topic);
+
+    void createVideo(String keyword);
 }

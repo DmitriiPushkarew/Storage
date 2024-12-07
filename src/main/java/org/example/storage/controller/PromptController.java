@@ -37,4 +37,10 @@ public class PromptController {
     public List<String> getKeywordsByTopic(@RequestParam(name = "topic") String topic) {
         return promptService.getKeywordsByTopic(topic);
     }
+
+    @GetMapping("/create-video")
+    public String createVideo(@RequestParam(name = "keyword") String keyword) {
+        promptService.createVideo(keyword);
+        return "Video creation request sent for keyword: " + keyword;
+    }
 }

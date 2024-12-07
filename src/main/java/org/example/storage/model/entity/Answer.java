@@ -1,4 +1,4 @@
-package org.example.storage.model;
+package org.example.storage.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
