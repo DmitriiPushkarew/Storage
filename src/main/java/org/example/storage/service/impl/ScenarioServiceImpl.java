@@ -21,6 +21,6 @@ public class ScenarioServiceImpl implements ScenarioService {
                 .answerContent(answer.getContent())
                 .keyword(answer.getKeyword())
                 .build();
-        rabbitTemplate.convertAndSend("scenario_queue", scenarioMessage);
+        rabbitTemplate.convertAndSend("scenario_exchange", "", scenarioMessage);
     }
 }
