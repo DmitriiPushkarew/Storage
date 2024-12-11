@@ -7,4 +7,5 @@ public class AnswerRequest {
     private String promptTopic;
     private String keyword;
     private String content;
+
 }

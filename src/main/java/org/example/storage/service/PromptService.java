@@ -7,4 +7,5 @@ public interface PromptService {
     void addPrompt(String topic, String promptContent);
 
     List<String> getTopics();
+
 }

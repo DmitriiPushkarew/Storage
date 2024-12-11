@@ -46,4 +46,5 @@ public class ScenarioController {
         scenarioService.createVideo(keyword);
         return ResponseEntity.ok().build();
     }
+
 }

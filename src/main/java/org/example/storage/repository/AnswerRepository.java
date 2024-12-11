@@ -16,4 +16,5 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query("SELECT a FROM Answer a WHERE a.keyword = :keyword")
     Optional<Answer> findByKeyword(String keyword);
+
 }

@@ -12,6 +12,7 @@ public class ScenarioMessageDto implements Serializable {
     private Long answerId;
     private String answerContent;
     private String keyword;
+
 }
 
 

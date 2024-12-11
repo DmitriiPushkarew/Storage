@@ -21,11 +21,13 @@ public class AnswerServiceImpl implements AnswerService {
     public void addAnswer(String topic, String keyword, String answerContent) {
         Prompt prompt = promptRepository.findByTopic(topic)
                 .orElseThrow(() -> new IllegalArgumentException("Prompt not found with topic: " + topic));
+
         Answer answer = Answer.builder()
                 .prompt(prompt)
                 .keyword(keyword)
                 .content(answerContent)
                 .build();
+
         answerRepository.save(answer);
     }
 
@@ -37,4 +39,5 @@ public class AnswerServiceImpl implements AnswerService {
         return answerRepository.findByKeyword(keyword)
                 .orElseThrow(() -> new IllegalArgumentException("Answer not found for keyword: " + keyword));
     }
+
 }

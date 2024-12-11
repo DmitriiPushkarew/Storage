@@ -15,12 +15,19 @@ public class ScenarioServiceImpl implements ScenarioService {
 
     public void createVideo(String keyword) {
         Answer answer = answerService.getAnswerByKeyword(keyword);
-        ScenarioMessageDto scenarioMessage = ScenarioMessageDto.builder()
+
+        ScenarioMessageDto scenarioMessage = buildScenarioMessage(answer);
+
+        rabbitTemplate.convertAndSend("scenario_exchange", "", scenarioMessage);
+    }
+
+    private ScenarioMessageDto buildScenarioMessage(Answer answer) {
+        return ScenarioMessageDto.builder()
                 .promptId(answer.getPrompt().getId())
                 .answerId(answer.getId())
                 .answerContent(answer.getContent())
                 .keyword(answer.getKeyword())
                 .build();
-        rabbitTemplate.convertAndSend("scenario_exchange", "", scenarioMessage);
     }
+
 }

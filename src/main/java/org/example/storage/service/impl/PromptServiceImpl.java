@@ -21,10 +21,12 @@ public class PromptServiceImpl implements PromptService {
                 .content(promptContent)
                 .topic(topic)
                 .build();
+
         promptRepository.save(prompt);
     }
 
     public List<String> getTopics() {
         return promptRepository.findAllDistinctTopics();
     }
+
 }

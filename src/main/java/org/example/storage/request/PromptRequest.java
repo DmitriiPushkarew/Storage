@@ -6,4 +6,5 @@ import lombok.Data;
 public class PromptRequest {
     private String topic;
     private String content;
+
 }

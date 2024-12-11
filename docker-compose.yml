@@ -1,37 +1,53 @@
+version: "3.9"
+
 services:
   postgres:
-    image: postgres
+    image: postgres:14
     container_name: video_creator_db
     restart: always
     environment:
-      POSTGRES_USER:
-      POSTGRES_PASSWORD:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: video_creator
     ports:
       - "5432:5432"
     networks:
       - app_network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USERNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     container_name: pgadmin
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL:
-      PGADMIN_DEFAULT_PASSWORD:
+      PGADMIN_DEFAULT_EMAIL: ${DB_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${DB_PASSWORD}
     ports:
       - "8082:80"
     networks:
       - app_network
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
+    restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
     networks:
       - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   storage:
     build:
@@ -39,19 +55,42 @@ services:
       dockerfile: Dockerfile
     container_name: storage
     depends_on:
-      - postgres
-      - rabbitmq
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/video_creator
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: andante371
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
-      SPRING_RABBITMQ_USERNAME: guest
-      SPRING_RABBITMQ_PASSWORD: guest
+      SPRING_RABBITMQ_USERNAME: ${RABBITMQ_LOGIN}
+      SPRING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
       SERVER_PORT: 8081
     ports:
       - "8081:8081"
+    networks:
+      - app_network
+
+  voiceover:
+    build:
+      context: D:/IdeaProjects/Voiceover
+      dockerfile: Dockerfile
+    container_name: voiceover
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: ${RABBITMQ_LOGIN}
+      SPRING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      SERVER_PORT: 8083
+    ports:
+      - "8083:8083"
     networks:
       - app_network
 

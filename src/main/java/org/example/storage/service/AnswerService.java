@@ -11,4 +11,5 @@ public interface AnswerService {
     List<String> getKeywordsByTopic(String topic);
 
     Answer getAnswerByKeyword(String keyword);
+
 }

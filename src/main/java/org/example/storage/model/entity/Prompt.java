@@ -38,4 +38,5 @@ public class Prompt {
             createdAt = LocalDateTime.now();
         }
     }
+
 }

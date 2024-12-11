@@ -16,4 +16,5 @@ public interface PromptRepository extends JpaRepository<Prompt, Long> {
 
     @Query("SELECT DISTINCT p.topic FROM Prompt p")
     List<String> findAllDistinctTopics();
+
 }
